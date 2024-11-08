@@ -52,22 +52,15 @@ input[type="text"], input[type="password"], textarea {
 }
 
 input[type="email"] {
-    width: 80%;
+    width: 100%;
     padding: 10px;
     margin: 10px 0;
-    display: block;
-    font-size: 16px;
-    color: #ffffff;
-    background-color: #141414;
-    border: 1px solid #333;
-    border-radius: 5px;
-    text-align: center;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: #e6e6e6;
 }
 
-input[type="email"]:focus {
-    border-color: #d500f9;
-    outline: none;
-}
 
 input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
     outline: none;
