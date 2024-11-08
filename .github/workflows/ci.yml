@@ -1,4 +1,4 @@
-name: Python CI
+name: Python CI for Windows
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: windows-latest  # Указываем, что использовать Windows runner
 
     steps:
     - name: Checkout repository
@@ -19,20 +19,26 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.11'  # Указываем нужную версию Python
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install ChromeDriver
+    - name: Install ChromeDriver (Windows)
       run: |
-        # Устанавливаем нужную версию ChromeDriver, соответствующую версии Chrome
-        wget https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin
-        rm chromedriver_linux64.zip
+        # Скачиваем и распаковываем ChromeDriver для Windows
+        Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_win32.zip" -OutFile "chromedriver.zip"
+        Expand-Archive -Path "chromedriver.zip" -DestinationPath "."
+        move .\chromedriver.exe C:\chromedriver\chromedriver.exe
+        echo "chromedriver installed to C:\chromedriver"
+
+    - name: Add ChromeDriver to PATH
+      run: |
+        # Добавляем chromedriver в системный PATH
+        setx PATH "$env:PATH;C:\chromedriver"
+        echo "ChromeDriver added to PATH"
 
     - name: Run tests
       run: |
