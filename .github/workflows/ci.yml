@@ -43,12 +43,27 @@ jobs:
 
     - name: Set FLASK_APP environment variable
       run: |
-        echo "FLASK_APP=appi.app" >> $GITHUB_ENV
+        echo "FLASK_APP=pract.appi.app" >> $GITHUB_ENV
         echo "FLASK_ENV=development" >> $GITHUB_ENV
 
-    - name: Run Flask server
+    - name: Run Flask server in background
       run: |
         Start-Process -NoNewWindow -FilePath "python" -ArgumentList "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"
+        # Проверка доступности Flask сервера
+        $url = "http://127.0.0.1:5000"
+        $maxAttempts = 10
+        $attempt = 0
+        while ($attempt -lt $maxAttempts) {
+          try {
+            Invoke-WebRequest -Uri $url -Method Head
+            echo "Flask server is available."
+            break
+          } catch {
+            $attempt++
+            echo "Waiting for Flask to start... ($attempt/$maxAttempts)"
+            Start-Sleep -Seconds 5
+          }
+        }
 
     - name: Run tests
       run: |
