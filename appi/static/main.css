@@ -1,0 +1,73 @@
+/* Общие стили для формы */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Контейнер для формы */
+.form-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Заголовок формы */
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* Оформление для всех полей формы */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Оформление кнопки */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: #ff0000;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+/* Стили ошибок для полей формы */
+input.error {
+    border-color: #ff0000;
+}
+
+/* Удобства адаптивного дизайна */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+    }
+}

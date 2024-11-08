@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Регистрация</h2>
+        <form id="registrationForm">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name">
+            <div id="nameError" class="error-message"></div>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <div id="emailError" class="error-message"></div>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password">
+            <div id="passwordError" class="error-message"></div>
+
+            <button type="submit" id="submitBtn">Зарегистрироваться</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById("registrationForm");
+
+        function validateForm() {
+            let isValid = true;
+            const name = document.getElementById("name");
+            const email = document.getElementById("email");
+            const password = document.getElementById("password");
+            
+            // Name validation
+            const nameError = document.getElementById("nameError");
+            if (name.value.trim() === "") {
+                nameError.textContent = "Поле 'Имя' обязательно.";
+                isValid = false;
+            } else {
+                nameError.textContent = "";
+            }
+            
+            // Email validation
+            const emailError = document.getElementById("emailError");
+            if (!/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,6}$/.test(email.value)) {
+                emailError.textContent = "Введите корректный email.";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+            
+            // Password validation
+            const passwordError = document.getElementById("passwordError");
+            if (password.value.length < 8) {
+                passwordError.textContent = "Пароль должен содержать минимум 8 символов.";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+            return isValid;
+        }
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            if (validateForm()) {
+                const formData = {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    password: document.getElementById("password").value
+                };
+                fetch("http://127.0.0.1:5000/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => alert(data.message || data.error))
+                .catch(error => alert("Ошибка при отправке данных"));
+            }
+        });
+    </script>
+</body>
+</html>
