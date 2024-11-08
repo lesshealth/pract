@@ -51,7 +51,7 @@ jobs:
         Start-Process -NoNewWindow -FilePath "python" -ArgumentList "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"
         # Проверка доступности Flask сервера
         $url = "http://127.0.0.1:5000"
-        $maxAttempts = 10
+        $maxAttempts = 20  # Увеличиваем количество попыток
         $attempt = 0
         while ($attempt -lt $maxAttempts) {
           try {
@@ -63,6 +63,10 @@ jobs:
             echo "Waiting for Flask to start... ($attempt/$maxAttempts)"
             Start-Sleep -Seconds 5
           }
+        }
+        if ($attempt -eq $maxAttempts) {
+          echo "Flask server not available after waiting for $maxAttempts attempts."
+          exit 1  # Завершаем процесс с ошибкой, если сервер не доступен
         }
 
     - name: Run tests
