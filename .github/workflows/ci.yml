@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: windows-latest  # Указываем, что использовать Windows runner
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
@@ -19,17 +19,36 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'  # Указываем нужную версию Python
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Flask server in the background
+    - name: Install ChromeDriver (Windows)
+      run: |
+        Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_win32.zip" -OutFile "chromedriver.zip"
+        Expand-Archive -Path "chromedriver.zip" -DestinationPath "."
+        if (-Not (Test-Path -Path "C:\chromedriver")) {
+          New-Item -ItemType Directory -Path "C:\chromedriver"
+        }
+        Move-Item -Path ".\chromedriver.exe" -Destination "C:\chromedriver\chromedriver.exe"
+        echo "chromedriver installed to C:\chromedriver"
+
+    - name: Add ChromeDriver to PATH
+      run: |
+        setx PATH "$env:PATH;C:\chromedriver"
+        echo "ChromeDriver added to PATH"
+
+    - name: Set FLASK_APP environment variable
+      run: |
+        echo "FLASK_APP=appi.app" >> $GITHUB_ENV
+        echo "FLASK_ENV=development" >> $GITHUB_ENV
+
+    - name: Run Flask server
       run: |
         Start-Process -NoNewWindow -FilePath "python" -ArgumentList "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"
-        timeout /t 5  # Ждем несколько секунд, чтобы сервер успел запуститься
 
     - name: Run tests
       run: |
