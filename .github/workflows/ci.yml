@@ -28,14 +28,10 @@ jobs:
 
     - name: Add ChromeDriver to PATH
       run: |
-        # Если ChromeDriver уже находится в проекте, можно просто добавить его в PATH
+        # Если ChromeDriver уже находится в проекте, добавляем его в PATH
         setx PATH "$env:PATH;$(pwd)\path\to\your\chromedriver"
         echo "ChromeDriver added to PATH"
 
-    - name: Run Flask server in the background
-      run: |
-        start /B python -m flask run --host=0.0.0.0 --port=5000
-        
     - name: Wait for Flask to be available
       run: |
         # Проверяем доступность Flask-сервера
