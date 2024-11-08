@@ -5,11 +5,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import time
 
-
 class RegistrationTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        service = Service("./drivers/chromedriver.exe")
+        service = Service(ChromeDriverManager().install())
         cls.driver = webdriver.Chrome(service=service)
         cls.driver.get('http://127.0.0.1:5000')
         cls.driver.implicitly_wait(10)
@@ -18,15 +17,12 @@ class RegistrationTest(unittest.TestCase):
         driver = self.driver
         driver.get('http://127.0.0.1:5000')
         
-        # Заполнение полей
         driver.find_element(By.ID, "name").send_keys("test user")
         driver.find_element(By.ID, "email").send_keys("testuser@example.com")
         driver.find_element(By.ID, "password").send_keys("testpass")
         
-        # Отправка формы
         driver.find_element(By.ID, "submitBtn").click()
         
-        # Ожидание ответа и проверка результата
         time.sleep(2)
         alert_text = driver.switch_to.alert.text
         self.assertIn("User registered successfully", alert_text)
@@ -80,12 +76,3 @@ class RegistrationTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-
-
-# testing, testing, attention please
-
-# testing, testing, attention please
-
-
-# testing, testing, attention please
