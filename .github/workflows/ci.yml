@@ -26,26 +26,40 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install ChromeDriver (Windows)
-      run: |
-        # Скачиваем и распаковываем ChromeDriver для Windows
-        Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_win32.zip" -OutFile "chromedriver.zip"
-        Expand-Archive -Path "chromedriver.zip" -DestinationPath "."
-        
-        # Создаем директорию, если ее нет
-        if (-Not (Test-Path -Path "C:\chromedriver")) {
-          New-Item -ItemType Directory -Path "C:\chromedriver"
-        }
-        
-        # Перемещаем файл в нужную директорию
-        Move-Item -Path ".\chromedriver.exe" -Destination "C:\chromedriver\chromedriver.exe"
-        echo "chromedriver installed to C:\chromedriver"
-
     - name: Add ChromeDriver to PATH
       run: |
-        # Добавляем chromedriver в системный PATH
-        setx PATH "$env:PATH;C:\chromedriver"
+        # Если ChromeDriver уже находится в проекте, можно просто добавить его в PATH
+        setx PATH "$env:PATH;$(pwd)\path\to\your\chromedriver"
         echo "ChromeDriver added to PATH"
+
+    - name: Run Flask server in the background
+      run: |
+        start /B python -m flask run --host=0.0.0.0 --port=5000
+        
+    - name: Wait for Flask to be available
+      run: |
+        # Проверяем доступность Flask-сервера
+        $maxRetries = 10
+        $retries = 0
+        $flaskAvailable = $false
+        while ($retries -lt $maxRetries) {
+          try {
+            $response = Invoke-WebRequest http://127.0.0.1:5000
+            if ($response.StatusCode -eq 200) {
+              $flaskAvailable = $true
+              break
+            }
+          } catch {
+            Write-Host "Waiting for Flask to start..."
+          }
+          Start-Sleep -Seconds 1
+          $retries++
+        }
+        if ($flaskAvailable -eq $false) {
+          Write-Host "Flask server not available after waiting"
+          exit 1
+        }
+        Write-Host "Flask server is available"
 
     - name: Run tests
       run: |
