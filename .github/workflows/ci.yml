@@ -31,7 +31,14 @@ jobs:
         # Скачиваем и распаковываем ChromeDriver для Windows
         Invoke-WebRequest -Uri "https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_win32.zip" -OutFile "chromedriver.zip"
         Expand-Archive -Path "chromedriver.zip" -DestinationPath "."
-        move .\chromedriver.exe C:\chromedriver\chromedriver.exe
+        
+        # Создаем директорию, если ее нет
+        if (-Not (Test-Path -Path "C:\chromedriver")) {
+          New-Item -ItemType Directory -Path "C:\chromedriver"
+        }
+        
+        # Перемещаем файл в нужную директорию
+        Move-Item -Path ".\chromedriver.exe" -Destination "C:\chromedriver\chromedriver.exe"
         echo "chromedriver installed to C:\chromedriver"
 
     - name: Add ChromeDriver to PATH
