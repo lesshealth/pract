@@ -9,7 +9,7 @@ import time
 class RegistrationTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        service = Service(ChromeDriverManager(version="130.0.6723.116", os_type="win32").install())
+        service = Service(ChromeDriverManager().install())
         cls.driver = webdriver.Chrome(service=service)
         cls.driver.get('http://127.0.0.1:5000')
         cls.driver.implicitly_wait(10)
