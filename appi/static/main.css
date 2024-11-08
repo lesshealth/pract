@@ -1,73 +1,65 @@
-/* Общие стили для формы */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #1A1A1D;
+    color: white;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
-/* Контейнер для формы */
-.form-container {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-}
-
-/* Заголовок формы */
-h2 {
+header {
+    background-color: #3E3D45;
+    padding: 15px;
     text-align: center;
-    color: #333;
+    font-size: 24px;
+    color: #F2F2F2;
 }
 
-/* Оформление для всех полей формы */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Оформление кнопки */
 button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #F26B38;
     border: none;
-    border-radius: 4px;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
     cursor: pointer;
+    color: white;
+    border-radius: 5px;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #D95B2C;
 }
 
-/* Стили для сообщений об ошибках */
-.error-message {
-    color: #ff0000;
-    font-size: 12px;
-    margin-bottom: 10px;
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    background-color: #2E2E36;
+    color: white;
 }
 
-/* Стили ошибок для полей формы */
-input.error {
-    border-color: #ff0000;
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #F26B38;
+    outline: none;
 }
 
-/* Удобства адаптивного дизайна */
-@media (max-width: 600px) {
-    .form-container {
-        padding: 20px;
-    }
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2A2A32;
+    border-radius: 8px;
+}
+
+footer {
+    background-color: #3E3D45;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #F2F2F2;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
